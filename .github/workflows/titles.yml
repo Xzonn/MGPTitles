@@ -3,6 +3,7 @@ name: 萌娘百科内容页面
 on:
   schedule:
     - cron: '0 16 1,15 * *'
+  workflow_dispatch:
 
 jobs:
   fpln:
@@ -21,7 +22,7 @@ jobs:
       env:
         BOT_NAME: ${{ secrets.BOT_NAME }}
         BOT_PASS: ${{ secrets.BOT_PASS }}
-        API_ADRESS: "https://zh.moegirl.org.cn/api.php?format=json"
+        API_ADDRESS: "https://zh.moegirl.org.cn/api.php?format=json"
       run: |
         python titles.py
     - name: Save titles

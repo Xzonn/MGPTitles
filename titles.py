@@ -19,17 +19,16 @@ response = session.post(API_ADDRESS,
     "meta": "tokens",
     "type": "login"
   })
-time.sleep(5)
 
 response = session.post(API_ADDRESS,
   data = {
     "action": "login",
     "lgtoken": response.json()["query"]["tokens"]["logintoken"],
     "lgname": BOT_NAME,
-    "lgpassword": API_ADDRESS
+    "lgpassword": BOT_PASS
   })
 print("Logged in.")
-time.sleep(5)
+time.sleep(10)
 
 # Get Titles
 titles = []
@@ -42,7 +41,7 @@ kw = {
   "aplimit": "max"
 }
 response = session.post(API_ADDRESS, data = kw)
-time.sleep(5)
+time.sleep(8)
 json = response.json()
 titles = [i["title"] for i in json["query"]["allpages"]]
 print(f"Titles: {len(titles)}")
@@ -54,7 +53,7 @@ while "continue" in json and "apcontinue" in json["continue"]:
     "apcontinue": json["continue"]["apcontinue"]
   })
   response = session.post(API_ADDRESS, data = kw)
-  time.sleep(5)
+  time.sleep(8)
   json = response.json()
   titles += [i["title"] for i in json["query"]["allpages"]]
   print(f"Titles: {len(titles)}")
