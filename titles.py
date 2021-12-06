@@ -2,7 +2,8 @@
 # -*- coding: UTF-8 -*-
 
 import requests
-import time, json, os, urllib
+import time, json, os
+from urllib.parse import quote
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -15,7 +16,7 @@ session = requests.Session()
 def Save(titles):
   with open("titles.txt", "w", -1, "utf-8") as f:
     f.write("\t".join(["id", "name", "url"]) + "\n")
-    f.write("\n".join([[i, i, f"https://zh.moegirl.org/{urllib.parse.urlencode(i)}"] for i in titles]))
+    f.write("\n".join([f"{i}\t{i}\thttps://zh.moegirl.org/{quote(i)}" for i in titles]))
 
 # Login
 response = session.post(API_ADDRESS,
