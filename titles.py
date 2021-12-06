@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import requests
-import time, json, os
+import time, json, os, urllib
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -11,6 +11,11 @@ BOT_PASS = os.environ["BOT_PASS"]
 API_ADDRESS = os.environ["API_ADDRESS"]
 
 session = requests.Session()
+
+def Save(titles):
+  with open("titles.txt", "w", -1, "utf-8") as f:
+    f.write("\t".join(["id", "name", "url"]) + "\n")
+    f.write("\n".join([[i, i, f"https://zh.moegirl.org/{urllib.parse.urlencode(i)}"] for i in titles]))
 
 # Login
 response = session.post(API_ADDRESS,
@@ -45,8 +50,7 @@ time.sleep(8)
 json = response.json()
 titles = [i["title"] for i in json["query"]["allpages"]]
 print(f"Titles: {len(titles)}")
-with open("titles.txt", "w", -1, "utf-8") as f:
-  f.write("\n".join(titles))
+Save(titles)
 
 while "continue" in json and "apcontinue" in json["continue"]:
   kw.update({
@@ -57,5 +61,4 @@ while "continue" in json and "apcontinue" in json["continue"]:
   json = response.json()
   titles += [i["title"] for i in json["query"]["allpages"]]
   print(f"Titles: {len(titles)}")
-  with open("titles.txt", "w", -1, "utf-8") as f:
-    f.write("\n".join(titles))
+  Save(titles)

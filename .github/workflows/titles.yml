@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  fpln:
+  titles:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -18,7 +18,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Fix page link names
+    - name: Fetch titles
       env:
         BOT_NAME: ${{ secrets.BOT_NAME }}
         BOT_PASS: ${{ secrets.BOT_PASS }}
