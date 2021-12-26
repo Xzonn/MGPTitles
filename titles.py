@@ -16,7 +16,7 @@ session = requests.Session()
 def Save(titles):
   with open("titles.txt", "w", -1, "utf-8") as f:
     f.write("\t".join(["id", "name", "url"]) + "\n")
-    f.write("\n".join([f"{i}\t{i}\thttps://zh.moegirl.org/{quote(i)}" for i in titles]))
+    f.write("\n".join([f"{i}\t{i}\thttps://zh.moegirl.org/{quote(i)}" for i in sorted(titles.keys(), key=lambda x: titles[x]["id"], reverse=True)]))
 
 # Login
 response = session.post(API_ADDRESS,
@@ -47,19 +47,28 @@ kw = {
   "aplimit": "max"
 }
 response = session.post(API_ADDRESS, data = kw)
-time.sleep(8)
 json = response.json()
-titles = [i["title"] for i in json["query"]["allpages"]]
-print(f"Titles: {len(titles)}")
+titles = {}
+for page in json["query"]["allpages"]:
+  titles[page["title"]] = {
+    "id": page["pageid"],
+    "title": page["title"]
+  }
 Save(titles)
+print(f"Titles: {len(titles)}")
+time.sleep(8)
 
 while "continue" in json and "apcontinue" in json["continue"]:
   kw.update({
     "apcontinue": json["continue"]["apcontinue"]
   })
   response = session.post(API_ADDRESS, data = kw)
-  time.sleep(8)
   json = response.json()
-  titles += [i["title"] for i in json["query"]["allpages"]]
-  print(f"Titles: {len(titles)}")
+  for page in json["query"]["allpages"]:
+    titles[page["title"]] = {
+      "id": page["pageid"],
+      "title": page["title"]
+    }
   Save(titles)
+  print(f"Titles: {len(titles)}")
+  time.sleep(8)
