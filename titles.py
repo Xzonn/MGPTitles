@@ -16,7 +16,7 @@ session = requests.Session()
 def Save(titles):
   with open("titles.txt", "w", -1, "utf-8") as f:
     f.write("\t".join(["id", "name", "url"]) + "\n")
-    f.write("\n".join([f"{i}\t{i}\thttps://zh.moegirl.org/{quote(i)}" for i in sorted(titles.keys(), key=lambda x: titles[x]["id"], reverse=True)]))
+    f.write("\n".join([f"{i}\t{i}\thttps://zh.moegirl.org.cn/{quote(i)}" for i in sorted(titles.keys(), key=lambda x: titles[x]["id"], reverse=True)]))
 
 # Login
 response = session.post(API_ADDRESS,
