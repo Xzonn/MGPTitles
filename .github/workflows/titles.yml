@@ -2,7 +2,7 @@ name: 萌娘百科内容页面
 
 on:
   schedule:
-    - cron: '0 16 1,15 * *'
+    - cron: '0 16 * * 1'
   workflow_dispatch:
 
 jobs:
